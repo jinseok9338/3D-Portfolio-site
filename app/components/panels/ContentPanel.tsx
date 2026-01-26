@@ -41,9 +41,7 @@ const overlayVariants = {
 export function ContentPanel({ children, title }: ContentPanelProps) {
   const activeSection = useSceneStore((state) => state.activeSection);
   const clearSection = useSceneStore((state) => state.clearSection);
-  const isTransitioning = useSceneStore((state) => state.isTransitioning);
-
-  const isOpen = activeSection !== null && !isTransitioning;
+  const isOpen = activeSection !== null;
 
   return (
     <AnimatePresence>

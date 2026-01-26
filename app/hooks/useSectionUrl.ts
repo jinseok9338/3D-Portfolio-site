@@ -1,31 +1,28 @@
-import { useEffect } from 'react';
-import { parseAsStringLiteral, useQueryState } from 'nuqs';
+import { useEffect, useRef } from 'react';
+import { useQueryState } from 'nuqs';
 import { useSceneStore } from '~/stores/useSceneStore';
 
-const SECTIONS = ['about', 'projects', 'skills', 'contact'] as const;
-
 export function useSectionUrl() {
-  const [urlSection, setUrlSection] = useQueryState(
-    'section',
-    parseAsStringLiteral(SECTIONS).withDefault(null as unknown as typeof SECTIONS[number])
-  );
-
+  const [urlSection, setUrlSection] = useQueryState('section');
   const activeSection = useSceneStore((state) => state.activeSection);
   const setActiveSection = useSceneStore((state) => state.setActiveSection);
 
-  // URL → Store 동기화 (초기 로드 시)
-  useEffect(() => {
-    if (urlSection && urlSection !== activeSection) {
-      setActiveSection(urlSection);
-    }
-  }, []);
+  const initialized = useRef(false);
 
-  // Store → URL 동기화
+  // URL → Store (최초 1회만)
   useEffect(() => {
-    if (activeSection !== urlSection) {
-      setUrlSection(activeSection as typeof SECTIONS[number] | null);
+    if (!initialized.current && urlSection) {
+      setActiveSection(urlSection as 'about' | 'projects' | 'skills' | 'contact');
+      initialized.current = true;
     }
-  }, [activeSection, urlSection, setUrlSection]);
+  }, [urlSection, setActiveSection]);
+
+  // Store → URL
+  useEffect(() => {
+    if (initialized.current || !urlSection) {
+      setUrlSection(activeSection);
+    }
+  }, [activeSection, setUrlSection, urlSection]);
 
   return { activeSection, setActiveSection };
 }
