@@ -5,3 +5,4 @@ export { Environment } from './Environment';
 export { CameraController } from './CameraController';
 export { OfficeModel } from './OfficeModel';
 export { StarParticles } from './StarParticles';
+export { InteractiveObject } from './InteractiveObject';

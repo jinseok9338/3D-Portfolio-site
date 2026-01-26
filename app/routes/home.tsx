@@ -7,6 +7,8 @@ import {
   OfficeModel,
   StarParticles,
 } from "~/components/three";
+import { ContentPanel } from "~/components/panels";
+import { useSectionUrl } from "~/hooks/useSectionUrl";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,6 +18,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  useSectionUrl();
+
   return (
     <div className="h-screen w-screen">
       <SceneCanvas>
@@ -25,6 +29,10 @@ export default function Home() {
         <CameraController autoRotate autoRotateSpeed={0.3} />
         <OfficeModel position={[0, -1, 0]} scale={1} />
       </SceneCanvas>
+
+      <ContentPanel>
+        <p className="text-muted-foreground">섹션 콘텐츠가 여기에 표시됩니다.</p>
+      </ContentPanel>
     </div>
   );
 }
