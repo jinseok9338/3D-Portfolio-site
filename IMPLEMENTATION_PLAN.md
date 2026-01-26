@@ -36,6 +36,7 @@
 | 1-3 | 조명 시스템 | 기본 조명 설정 (ambient, directional, etc.) | 1-1 |
 | 1-4 | 환경 설정 | Environment, Background, Fog 등 | 1-1 |
 | 1-5 | 로딩 상태 | Suspense + 로딩 UI (Html 컴포넌트) | 1-1 |
+| 1-6 | 배경 스타일링 | 파티클 별/먼지 배경 (움직이는 파티클) | 1-4 |
 
 ---
 
@@ -186,6 +187,7 @@ app/
 - [x] office.glb 모델 렌더링
 - [x] 카메라 컨트롤 동작 (OrbitControls)
 - [x] 로딩 상태 표시
+- [x] 배경 스타일링 (파티클 별/먼지 배경)
 
 ### Phase 2 완료 조건
 - [ ] 오브젝트 클릭 이벤트 동작

@@ -5,6 +5,7 @@ import {
   Environment,
   CameraController,
   OfficeModel,
+  StarParticles,
 } from "~/components/three";
 
 export function meta({}: Route.MetaArgs) {
@@ -20,6 +21,7 @@ export default function Home() {
       <SceneCanvas>
         <Environment />
         <Lighting />
+        <StarParticles count={2000} speed={0.3} />
         <CameraController autoRotate autoRotateSpeed={0.3} />
         <OfficeModel position={[0, -1, 0]} scale={1} />
       </SceneCanvas>
