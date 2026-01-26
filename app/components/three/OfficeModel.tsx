@@ -4,7 +4,7 @@ import type { ThreeElements } from '@react-three/fiber';
 type OfficeModelProps = ThreeElements['group'];
 
 export function OfficeModel(props: OfficeModelProps) {
-  const { scene } = useGLTF('/models/office.glb');
+  const { scene } = useGLTF('/models/low_poly_isometric_rooms.glb');
 
   return (
     <primitive
@@ -15,4 +15,4 @@ export function OfficeModel(props: OfficeModelProps) {
 }
 
 // 모델 프리로드
-useGLTF.preload('/models/office.glb');
+useGLTF.preload('/models/low_poly_isometric_rooms.glb');
