@@ -175,17 +175,17 @@ app/
 
 ## 체크리스트
 
-### Phase 0 완료 조건
-- [ ] `pnpm dev` 정상 실행
-- [ ] shadcn Button 렌더링 확인
-- [ ] Provider 구조 적용 (QueryClient, Overlay, Drawer)
-- [ ] `cn()` 유틸리티 동작 확인
+### Phase 0 완료 조건 ✅
+- [x] `pnpm dev` 정상 실행
+- [x] shadcn Button 렌더링 확인
+- [x] Provider 구조 적용 (Overlay, Drawer)
+- [x] `cn()` 유틸리티 동작 확인
 
-### Phase 1 완료 조건
-- [ ] 3D Canvas 화면에 표시
-- [ ] 기본 큐브 또는 테스트 오브젝트 렌더링
-- [ ] 카메라 컨트롤 동작
-- [ ] 로딩 상태 표시
+### Phase 1 완료 조건 ✅
+- [x] 3D Canvas 화면에 표시
+- [x] office.glb 모델 렌더링
+- [x] 카메라 컨트롤 동작 (OrbitControls)
+- [x] 로딩 상태 표시
 
 ### Phase 2 완료 조건
 - [ ] 오브젝트 클릭 이벤트 동작
