@@ -19,9 +19,8 @@ export const ROOM_CONFIG: Record<RoomId, RoomConfig> = {
   Room3: {
     section: null, // 거실 - 이스터에그 (Phase 7)
     label: '거실',
-    // worldCenter: [-0.015, 0.005, -0.014]
-    cameraPosition: [0.9, 1.2, -1.5],
-    cameraTarget: [-0.015, 0.005, -0.014],
+    cameraPosition: [0, 1.4, -0.7],
+    cameraTarget: [1, 0.105, 0.786],
   },
   Room4: {
     section: 'skills',
@@ -37,11 +36,10 @@ export const ROOM_CONFIG: Record<RoomId, RoomConfig> = {
     cameraTarget: [-1, 0.076, -1],
   },
   Room6: {
-    section: null, // 욕실 - 갤러리 (나중에)
+    section: null, // 욕실 - 갤러리
     label: '욕실',
-    // worldCenter: [-0.015, -0.006, 0.000]
-    cameraPosition: [0.9, 0.9, -1.2],
-    cameraTarget: [-0.015, -0.006, 0],
+    cameraPosition: [1.9, 0.6, -1],
+    cameraTarget: [0.255, -0.886, 0.62],
   },
   Room7: {
     section: 'hobby',

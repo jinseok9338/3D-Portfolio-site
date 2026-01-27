@@ -22,8 +22,10 @@ export function CameraDebugger() {
   // 각 방의 최신 값을 저장할 ref
   const room1Ref = useRef<RoomValues | null>(null);
   const room2Ref = useRef<RoomValues | null>(null);
+  const room3Ref = useRef<RoomValues | null>(null);
   const room4Ref = useRef<RoomValues | null>(null);
   const room5Ref = useRef<RoomValues | null>(null);
+  const room6Ref = useRef<RoomValues | null>(null);
   const room7Ref = useRef<RoomValues | null>(null);
 
   // Room1 - About
@@ -74,6 +76,30 @@ export function CameraDebugger() {
   });
   useEffect(() => { room2Ref.current = room2; }, [room2]);
 
+  // Room3 - Easter Egg
+  const room3 = useControls('Room3 - Easter Egg (거실)', {
+    camPosX: { value: ROOM_CONFIG.Room3.cameraPosition[0], min: -5, max: 5, step: 0.1 },
+    camPosY: { value: ROOM_CONFIG.Room3.cameraPosition[1], min: 0, max: 5, step: 0.1 },
+    camPosZ: { value: ROOM_CONFIG.Room3.cameraPosition[2], min: -5, max: 5, step: 0.1 },
+    targetX: { value: ROOM_CONFIG.Room3.cameraTarget[0], min: -1, max: 1, step: 0.01 },
+    targetY: { value: ROOM_CONFIG.Room3.cameraTarget[1], min: -1, max: 1, step: 0.01 },
+    targetZ: { value: ROOM_CONFIG.Room3.cameraTarget[2], min: -1, max: 1, step: 0.01 },
+    'Go': button(() => {
+      const v = room3Ref.current;
+      if (!v) return;
+      setCameraTarget({
+        position: [v.camPosX, v.camPosY, v.camPosZ],
+        target: [v.targetX, v.targetY, v.targetZ],
+      });
+    }),
+    'Log': button(() => {
+      const v = room3Ref.current;
+      if (!v) return;
+      console.log(`Room3: cameraPosition: [${v.camPosX}, ${v.camPosY}, ${v.camPosZ}], cameraTarget: [${v.targetX}, ${v.targetY}, ${v.targetZ}]`);
+    }),
+  });
+  useEffect(() => { room3Ref.current = room3; }, [room3]);
+
   // Room4 - Skills
   const room4 = useControls('Room4 - Skills (주방)', {
     camPosX: { value: ROOM_CONFIG.Room4.cameraPosition[0], min: -5, max: 5, step: 0.1 },
@@ -122,6 +148,30 @@ export function CameraDebugger() {
   });
   useEffect(() => { room5Ref.current = room5; }, [room5]);
 
+  // Room6 - Gallery
+  const room6 = useControls('Room6 - Gallery (욕실)', {
+    camPosX: { value: ROOM_CONFIG.Room6.cameraPosition[0], min: -5, max: 5, step: 0.1 },
+    camPosY: { value: ROOM_CONFIG.Room6.cameraPosition[1], min: 0, max: 5, step: 0.1 },
+    camPosZ: { value: ROOM_CONFIG.Room6.cameraPosition[2], min: -5, max: 5, step: 0.1 },
+    targetX: { value: ROOM_CONFIG.Room6.cameraTarget[0], min: -1, max: 1, step: 0.01 },
+    targetY: { value: ROOM_CONFIG.Room6.cameraTarget[1], min: -1, max: 1, step: 0.01 },
+    targetZ: { value: ROOM_CONFIG.Room6.cameraTarget[2], min: -1, max: 1, step: 0.01 },
+    'Go': button(() => {
+      const v = room6Ref.current;
+      if (!v) return;
+      setCameraTarget({
+        position: [v.camPosX, v.camPosY, v.camPosZ],
+        target: [v.targetX, v.targetY, v.targetZ],
+      });
+    }),
+    'Log': button(() => {
+      const v = room6Ref.current;
+      if (!v) return;
+      console.log(`Room6: cameraPosition: [${v.camPosX}, ${v.camPosY}, ${v.camPosZ}], cameraTarget: [${v.targetX}, ${v.targetY}, ${v.targetZ}]`);
+    }),
+  });
+  useEffect(() => { room6Ref.current = room6; }, [room6]);
+
   // Room7 - Hobby
   const room7 = useControls('Room7 - Hobby (헬스장)', {
     camPosX: { value: ROOM_CONFIG.Room7.cameraPosition[0], min: -5, max: 5, step: 0.1 },
@@ -153,13 +203,17 @@ export function CameraDebugger() {
       console.log('=== All Room Configs ===');
       const r1 = room1Ref.current;
       const r2 = room2Ref.current;
+      const r3 = room3Ref.current;
       const r4 = room4Ref.current;
       const r5 = room5Ref.current;
+      const r6 = room6Ref.current;
       const r7 = room7Ref.current;
       if (r1) console.log(`Room1: { cameraPosition: [${r1.camPosX}, ${r1.camPosY}, ${r1.camPosZ}], cameraTarget: [${r1.targetX}, ${r1.targetY}, ${r1.targetZ}] }`);
       if (r2) console.log(`Room2: { cameraPosition: [${r2.camPosX}, ${r2.camPosY}, ${r2.camPosZ}], cameraTarget: [${r2.targetX}, ${r2.targetY}, ${r2.targetZ}] }`);
+      if (r3) console.log(`Room3: { cameraPosition: [${r3.camPosX}, ${r3.camPosY}, ${r3.camPosZ}], cameraTarget: [${r3.targetX}, ${r3.targetY}, ${r3.targetZ}] }`);
       if (r4) console.log(`Room4: { cameraPosition: [${r4.camPosX}, ${r4.camPosY}, ${r4.camPosZ}], cameraTarget: [${r4.targetX}, ${r4.targetY}, ${r4.targetZ}] }`);
       if (r5) console.log(`Room5: { cameraPosition: [${r5.camPosX}, ${r5.camPosY}, ${r5.camPosZ}], cameraTarget: [${r5.targetX}, ${r5.targetY}, ${r5.targetZ}] }`);
+      if (r6) console.log(`Room6: { cameraPosition: [${r6.camPosX}, ${r6.camPosY}, ${r6.camPosZ}], cameraTarget: [${r6.targetX}, ${r6.targetY}, ${r6.targetZ}] }`);
       if (r7) console.log(`Room7: { cameraPosition: [${r7.camPosX}, ${r7.camPosY}, ${r7.camPosZ}], cameraTarget: [${r7.targetX}, ${r7.targetY}, ${r7.targetZ}] }`);
     }),
   });

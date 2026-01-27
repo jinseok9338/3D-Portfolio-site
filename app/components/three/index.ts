@@ -11,3 +11,5 @@ export { DimmableRoom } from './DimmableRoom';
 export { CameraDebugger } from './CameraDebugger';
 export { Room1InteractiveObjects } from './room1';
 export { Room2InteractiveObjects } from './room2';
+export { Room3InteractiveObjects } from './room3';
+export { Room6InteractiveObjects } from './room6';

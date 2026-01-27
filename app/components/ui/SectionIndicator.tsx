@@ -20,6 +20,10 @@ const SECTION_CONTENT: Partial<Record<RoomId, SectionContent>> = {
     title: 'Projects',
     subtitle: '작업물을 확인해보세요',
   },
+  Room3: {
+    title: 'Easter Egg',
+    subtitle: 'TV를 클릭해보세요 🎮',
+  },
   Room4: {
     title: 'Skills',
     subtitle: '기술 스택',
@@ -36,6 +40,10 @@ const SECTION_CONTENT: Partial<Record<RoomId, SectionContent>> = {
       { label: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
       { label: 'Email', url: 'mailto:hello@example.com', icon: 'mail' },
     ],
+  },
+  Room6: {
+    title: 'Gallery',
+    subtitle: '거울/액자를 클릭해보세요 🖼️',
   },
   Room7: {
     title: 'Hobby',

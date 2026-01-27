@@ -9,6 +9,8 @@ import {
   CameraDebugger,
   Room1InteractiveObjects,
   Room2InteractiveObjects,
+  Room3InteractiveObjects,
+  Room6InteractiveObjects,
 } from "~/components/three";
 import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
@@ -36,6 +38,8 @@ export default function Home() {
         <OfficeModel position={[0, 0, 0]} scale={0.003} />
         <Room1InteractiveObjects />
         <Room2InteractiveObjects />
+        <Room3InteractiveObjects />
+        <Room6InteractiveObjects />
         <CameraDebugger />
         {/* <DebugRoomPositions /> */}
       </SceneCanvas>

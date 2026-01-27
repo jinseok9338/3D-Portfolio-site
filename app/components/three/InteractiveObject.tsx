@@ -8,7 +8,7 @@ import type { SectionId, RoomId } from '~/types';
 
 type InteractiveObjectProps = {
   children: ReactNode;
-  section: SectionId;
+  section: SectionId | null; // null = 특별한 방 (이스터에그, 갤러리 등)
   roomId?: RoomId;
   disabled?: boolean;
   onClick?: () => void;

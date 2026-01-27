@@ -49,18 +49,21 @@ export function RoomsModel(props: RoomsModelProps) {
     return scene1.children.map((child) => cloneWithMaterials(child));
   }, [scene]);
 
+  // 특별한 인터랙션이 있는 방 (섹션 없이도 클릭 가능)
+  const SPECIAL_ROOMS: RoomId[] = ['Room3', 'Room6']; // 이스터에그, 갤러리
+
   return (
     <group {...props}>
       {rooms.map((child) => {
         const roomId = child.name as RoomId;
         const config = ROOM_CONFIG[roomId];
 
-        // 섹션이 매핑된 방: 클릭 가능 + dim 효과
-        if (config?.section) {
+        // 섹션이 매핑된 방 또는 특별한 방: 클릭 가능 + dim 효과
+        if (config?.section || SPECIAL_ROOMS.includes(roomId)) {
           return (
             <InteractiveObject
               key={child.name}
-              section={config.section}
+              section={config?.section ?? null}
               roomId={roomId}
             >
               <primitive object={child} />
@@ -68,7 +71,7 @@ export function RoomsModel(props: RoomsModelProps) {
           );
         }
 
-        // 섹션 없는 방 (거실, 욕실): 클릭 불가 + dim 효과만
+        // 그 외의 방: 클릭 불가 + dim 효과만
         return (
           <DimmableRoom key={child.name} roomId={roomId}>
             <primitive object={child} />

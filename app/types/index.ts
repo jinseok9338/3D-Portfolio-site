@@ -23,8 +23,14 @@ export type Room1ObjectId = 'computer' | 'desk' | 'shelf' | 'telescope';
 // Room2 (Projects) 내부 클릭 가능한 오브젝트
 export type Room2ObjectId = 'laptop' | 'corkboard' | 'bookshelf';
 
+// Room3 (거실) 이스터에그 오브젝트
+export type Room3ObjectId = 'tv';
+
+// Room6 (욕실) 갤러리 오브젝트
+export type Room6ObjectId = 'mirror' | 'pictures';
+
 // 모든 방의 오브젝트 ID 통합
-export type RoomObjectId = Room1ObjectId | Room2ObjectId;
+export type RoomObjectId = Room1ObjectId | Room2ObjectId | Room3ObjectId | Room6ObjectId;
 
 // 오브젝트 콘텐츠 타입
 export type ObjectContent<T extends string = string> = {
