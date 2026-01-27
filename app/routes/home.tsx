@@ -13,6 +13,7 @@ import {
 import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
 import { SectionIndicator } from "~/components/ui/SectionIndicator";
+import { BackToHomeButton } from "~/components/ui/BackToHomeButton";
 import { useSectionUrl } from "~/hooks/useSectionUrl";
 
 export function meta({}: Route.MetaArgs) {
@@ -41,6 +42,9 @@ export default function Home() {
 
       {/* 섹션 인디케이터 */}
       <SectionIndicator />
+
+      {/* 홈으로 돌아가기 버튼 */}
+      <BackToHomeButton />
 
       {/* TODO: Phase 4에서 콘텐츠 추가 후 활성화
       <ContentPanel>
