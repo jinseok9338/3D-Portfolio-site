@@ -1,14 +1,24 @@
 import { create } from 'zustand';
+import type { RoomId, SectionId } from '~/types';
 
-type SectionType = 'about' | 'projects' | 'skills' | 'contact' | null;
+type SectionType = SectionId | null;
+
+type CameraTarget = {
+  position: [number, number, number];
+  target: [number, number, number];
+} | null;
 
 type SceneState = {
   activeSection: SectionType;
+  activeRoom: RoomId | null;
+  cameraTarget: CameraTarget;
   isTransitioning: boolean;
 };
 
 type SceneActions = {
   setActiveSection: (section: SectionType) => void;
+  setActiveRoom: (room: RoomId | null) => void;
+  setCameraTarget: (target: CameraTarget) => void;
   clearSection: () => void;
   setIsTransitioning: (isTransitioning: boolean) => void;
   reset: () => void;
@@ -16,6 +26,8 @@ type SceneActions = {
 
 const initialState: SceneState = {
   activeSection: null,
+  activeRoom: null,
+  cameraTarget: null,
   isTransitioning: false,
 };
 
@@ -24,7 +36,11 @@ export const useSceneStore = create<SceneState & SceneActions>((set) => ({
 
   setActiveSection: (section) => set({ activeSection: section }),
 
-  clearSection: () => set({ activeSection: null }),
+  setActiveRoom: (room) => set({ activeRoom: room }),
+
+  setCameraTarget: (target) => set({ cameraTarget: target }),
+
+  clearSection: () => set({ activeSection: null, activeRoom: null, cameraTarget: null }),
 
   setIsTransitioning: (isTransitioning) => set({ isTransitioning }),
 

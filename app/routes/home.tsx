@@ -6,7 +6,9 @@ import {
   CameraController,
   OfficeModel,
   StarParticles,
+  CameraDebugger,
 } from "~/components/three";
+import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
 import { useSectionUrl } from "~/hooks/useSectionUrl";
 
@@ -26,8 +28,10 @@ export default function Home() {
         <Environment />
         <Lighting />
         <StarParticles count={2000} speed={0.3} />
-        <CameraController autoRotate autoRotateSpeed={0.3} />
-        <OfficeModel position={[0, -1, 0]} scale={1} />
+        <CameraController />
+        <OfficeModel position={[0, 0, 0]} scale={0.003} />
+        <CameraDebugger />
+        {/* <DebugRoomPositions /> */}
       </SceneCanvas>
 
       <ContentPanel>

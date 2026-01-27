@@ -1,13 +1,14 @@
 import { useState, useRef, type ReactNode } from 'react';
 import { useSceneStore } from '~/stores/useSceneStore';
+import { ROOM_CONFIG } from './roomConfig';
 import type { Group } from 'three';
 import type { ThreeEvent } from '@react-three/fiber';
-
-type SectionType = 'about' | 'projects' | 'skills' | 'contact';
+import type { SectionId, RoomId } from '~/types';
 
 type InteractiveObjectProps = {
   children: ReactNode;
-  section: SectionType;
+  section: SectionId;
+  roomId?: RoomId;
   disabled?: boolean;
   onClick?: () => void;
   onHover?: (hovered: boolean) => void;
@@ -16,13 +17,14 @@ type InteractiveObjectProps = {
 export function InteractiveObject({
   children,
   section,
+  roomId,
   disabled = false,
   onClick,
   onHover,
 }: InteractiveObjectProps) {
   const groupRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
-  const setActiveSection = useSceneStore((state) => state.setActiveSection);
+  const { setActiveSection, setActiveRoom, setCameraTarget } = useSceneStore();
 
   const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
     if (disabled) return;
@@ -43,7 +45,25 @@ export function InteractiveObject({
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     if (disabled) return;
     e.stopPropagation();
+
+    console.log('=== Room Clicked ===');
+    console.log('roomId:', roomId);
+    console.log('section:', section);
+
     setActiveSection(section);
+
+    if (roomId) {
+      setActiveRoom(roomId);
+      const config = ROOM_CONFIG[roomId];
+      console.log('config:', config);
+      if (config) {
+        setCameraTarget({
+          position: config.cameraPosition,
+          target: config.cameraTarget,
+        });
+      }
+    }
+
     onClick?.();
   };
 
