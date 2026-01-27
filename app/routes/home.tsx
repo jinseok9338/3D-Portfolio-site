@@ -8,6 +8,7 @@ import {
   StarParticles,
   CameraDebugger,
   Room1InteractiveObjects,
+  Room2InteractiveObjects,
 } from "~/components/three";
 import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
@@ -33,6 +34,7 @@ export default function Home() {
         <CameraController />
         <OfficeModel position={[0, 0, 0]} scale={0.003} />
         <Room1InteractiveObjects />
+        <Room2InteractiveObjects />
         <CameraDebugger />
         {/* <DebugRoomPositions /> */}
       </SceneCanvas>

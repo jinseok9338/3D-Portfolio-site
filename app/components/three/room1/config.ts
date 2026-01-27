@@ -56,7 +56,7 @@ export function getMeshObjectId(meshName: string): Room1ObjectId | null {
 }
 
 // 오브젝트별 콘텐츠 (나중에 실제 데이터로 교체)
-export const ROOM1_CONTENTS: Record<Room1ObjectId, ObjectContent> = {
+export const ROOM1_CONTENTS: Record<Room1ObjectId, ObjectContent<Room1ObjectId>> = {
   computer: {
     id: 'computer',
     title: '안녕하세요!',

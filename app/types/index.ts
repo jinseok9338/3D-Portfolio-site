@@ -20,14 +20,27 @@ export type RoomId = 'Room1' | 'Room2' | 'Room3' | 'Room4' | 'Room5' | 'Room6' |
 // Room1 (About) 내부 클릭 가능한 오브젝트
 export type Room1ObjectId = 'computer' | 'desk' | 'shelf' | 'telescope';
 
+// Room2 (Projects) 내부 클릭 가능한 오브젝트
+export type Room2ObjectId = 'laptop' | 'corkboard' | 'bookshelf';
+
+// 모든 방의 오브젝트 ID 통합
+export type RoomObjectId = Room1ObjectId | Room2ObjectId;
+
 // 오브젝트 콘텐츠 타입
-export type ObjectContent = {
-  id: Room1ObjectId;
+export type ObjectContent<T extends string = string> = {
+  id: T;
   title: string;
   description?: string;
   items?: Array<{ label: string; value: string }>;
   links?: Array<{ label: string; url: string; icon?: string }>;
   tags?: string[];
+  // 프로젝트용 추가 필드
+  projects?: Array<{
+    name: string;
+    description: string;
+    tech?: string[];
+    link?: string;
+  }>;
 };
 
 // Common utility types

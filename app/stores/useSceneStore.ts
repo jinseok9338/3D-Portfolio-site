@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { RoomId, SectionId, Room1ObjectId } from '~/types';
+import type { RoomId, SectionId, RoomObjectId } from '~/types';
 
 type SectionType = SectionId | null;
 
@@ -13,11 +13,12 @@ type SceneState = {
   activeRoom: RoomId | null;
   cameraTarget: CameraTarget;
   isTransitioning: boolean;
-  // Room1 내부 오브젝트 선택 상태
-  activeObject: Room1ObjectId | null;
+  // Room 내부 오브젝트 선택 상태
+  activeObject: RoomObjectId | null;
   objectPosition: [number, number, number] | null; // 말풍선 위치용
   // Hover 상태
-  hoveredObject: Room1ObjectId | null;
+  hoveredObject: RoomObjectId | null;
+  hoverPosition: [number, number, number] | null;
 };
 
 type SceneActions = {
@@ -26,10 +27,10 @@ type SceneActions = {
   setCameraTarget: (target: CameraTarget) => void;
   clearSection: () => void;
   setIsTransitioning: (isTransitioning: boolean) => void;
-  // Room1 내부 오브젝트 액션
-  setActiveObject: (objectId: Room1ObjectId | null, position?: [number, number, number]) => void;
+  // Room 내부 오브젝트 액션
+  setActiveObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
   clearObject: () => void;
-  setHoveredObject: (objectId: Room1ObjectId | null) => void;
+  setHoveredObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
   reset: () => void;
 };
 
@@ -41,6 +42,7 @@ const initialState: SceneState = {
   activeObject: null,
   objectPosition: null,
   hoveredObject: null,
+  hoverPosition: null,
 };
 
 export const useSceneStore = create<SceneState & SceneActions>((set) => ({
@@ -69,7 +71,10 @@ export const useSceneStore = create<SceneState & SceneActions>((set) => ({
 
   clearObject: () => set({ activeObject: null, objectPosition: null }),
 
-  setHoveredObject: (objectId) => set({ hoveredObject: objectId }),
+  setHoveredObject: (objectId, position) => set({
+    hoveredObject: objectId,
+    hoverPosition: position || null,
+  }),
 
   reset: () => set(initialState),
 }));
