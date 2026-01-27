@@ -56,6 +56,9 @@ importers:
       overlay-kit:
         specifier: ^1.8.6
         version: 1.8.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      postprocessing:
+        specifier: ^6.38.2
+        version: 6.38.2(three@0.182.0)
       react:
         specifier: ^19.2.3
         version: 19.2.3

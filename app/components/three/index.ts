@@ -9,3 +9,4 @@ export { StarParticles } from './StarParticles';
 export { InteractiveObject } from './InteractiveObject';
 export { DimmableRoom } from './DimmableRoom';
 export { CameraDebugger } from './CameraDebugger';
+export { Room1InteractiveObjects } from './room1';

@@ -17,6 +17,19 @@ export type RoomConfig = {
 
 export type RoomId = 'Room1' | 'Room2' | 'Room3' | 'Room4' | 'Room5' | 'Room6' | 'Room7';
 
+// Room1 (About) 내부 클릭 가능한 오브젝트
+export type Room1ObjectId = 'computer' | 'desk' | 'shelf' | 'telescope';
+
+// 오브젝트 콘텐츠 타입
+export type ObjectContent = {
+  id: Room1ObjectId;
+  title: string;
+  description?: string;
+  items?: Array<{ label: string; value: string }>;
+  links?: Array<{ label: string; url: string; icon?: string }>;
+  tags?: string[];
+};
+
 // Common utility types
 export type PropsWithClassName<T = unknown> = T & {
   className?: string;

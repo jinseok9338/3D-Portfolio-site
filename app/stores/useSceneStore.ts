@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { RoomId, SectionId } from '~/types';
+import type { RoomId, SectionId, Room1ObjectId } from '~/types';
 
 type SectionType = SectionId | null;
 
@@ -13,6 +13,11 @@ type SceneState = {
   activeRoom: RoomId | null;
   cameraTarget: CameraTarget;
   isTransitioning: boolean;
+  // Room1 내부 오브젝트 선택 상태
+  activeObject: Room1ObjectId | null;
+  objectPosition: [number, number, number] | null; // 말풍선 위치용
+  // Hover 상태
+  hoveredObject: Room1ObjectId | null;
 };
 
 type SceneActions = {
@@ -21,6 +26,10 @@ type SceneActions = {
   setCameraTarget: (target: CameraTarget) => void;
   clearSection: () => void;
   setIsTransitioning: (isTransitioning: boolean) => void;
+  // Room1 내부 오브젝트 액션
+  setActiveObject: (objectId: Room1ObjectId | null, position?: [number, number, number]) => void;
+  clearObject: () => void;
+  setHoveredObject: (objectId: Room1ObjectId | null) => void;
   reset: () => void;
 };
 
@@ -29,6 +38,9 @@ const initialState: SceneState = {
   activeRoom: null,
   cameraTarget: null,
   isTransitioning: false,
+  activeObject: null,
+  objectPosition: null,
+  hoveredObject: null,
 };
 
 export const useSceneStore = create<SceneState & SceneActions>((set) => ({
@@ -40,9 +52,24 @@ export const useSceneStore = create<SceneState & SceneActions>((set) => ({
 
   setCameraTarget: (target) => set({ cameraTarget: target }),
 
-  clearSection: () => set({ activeSection: null, activeRoom: null, cameraTarget: null }),
+  clearSection: () => set({
+    activeSection: null,
+    activeRoom: null,
+    cameraTarget: null,
+    activeObject: null,
+    objectPosition: null,
+  }),
 
   setIsTransitioning: (isTransitioning) => set({ isTransitioning }),
+
+  setActiveObject: (objectId, position) => set({
+    activeObject: objectId,
+    objectPosition: position || null
+  }),
+
+  clearObject: () => set({ activeObject: null, objectPosition: null }),
+
+  setHoveredObject: (objectId) => set({ hoveredObject: objectId }),
 
   reset: () => set(initialState),
 }));

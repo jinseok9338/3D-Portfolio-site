@@ -8,7 +8,7 @@ export const ROOM_CONFIG: Record<RoomId, RoomConfig> = {
     section: 'about',
     label: '아이 침실',
     cameraPosition: [1.1, 2.8, -0.1],
-    cameraTarget: [-0.02, 0.786, 1],
+    cameraTarget: [-0.02, 1, 1],
   },
   Room2: {
     section: 'projects',
