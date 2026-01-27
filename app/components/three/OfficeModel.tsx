@@ -2,9 +2,10 @@ import { useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import type { ThreeElements } from '@react-three/fiber';
 import { InteractiveObject } from './InteractiveObject';
+import { DimmableRoom } from './DimmableRoom';
 import { ROOM_CONFIG } from './roomConfig';
 import type { RoomId } from '~/types';
-import type { Object3D } from 'three';
+import type { Object3D, Mesh, MeshStandardMaterial } from 'three';
 
 type RoomsModelProps = ThreeElements['group'];
 
@@ -18,13 +19,34 @@ function findScene1(obj: Object3D): Object3D | null {
   return null;
 }
 
+// 모든 material을 clone하는 헬퍼 함수
+function cloneWithMaterials(obj: Object3D): Object3D {
+  const cloned = obj.clone();
+
+  cloned.traverse((child) => {
+    if ((child as Mesh).isMesh) {
+      const mesh = child as Mesh;
+      if (Array.isArray(mesh.material)) {
+        mesh.material = mesh.material.map((mat) => mat.clone());
+      } else if (mesh.material) {
+        mesh.material = mesh.material.clone();
+      }
+    }
+  });
+
+  return cloned;
+}
+
 export function RoomsModel(props: RoomsModelProps) {
   const { scene } = useGLTF('/models/low_poly_isometric_rooms.glb');
 
-  // Scene_1의 children (Room들)을 찾음
+  // Scene_1의 children (Room들)을 찾고, material을 미리 clone
   const rooms = useMemo(() => {
     const scene1 = findScene1(scene);
-    return scene1?.children || [];
+    if (!scene1) return [];
+
+    // 각 방을 deep clone (material 포함)
+    return scene1.children.map((child) => cloneWithMaterials(child));
   }, [scene]);
 
   return (
@@ -33,7 +55,7 @@ export function RoomsModel(props: RoomsModelProps) {
         const roomId = child.name as RoomId;
         const config = ROOM_CONFIG[roomId];
 
-        // 섹션이 매핑된 방만 인터랙티브
+        // 섹션이 매핑된 방: 클릭 가능 + dim 효과
         if (config?.section) {
           return (
             <InteractiveObject
@@ -41,13 +63,17 @@ export function RoomsModel(props: RoomsModelProps) {
               section={config.section}
               roomId={roomId}
             >
-              <primitive object={child.clone()} />
+              <primitive object={child} />
             </InteractiveObject>
           );
         }
 
-        // 매핑 안된 방은 그냥 렌더 (거실, 욕실 등)
-        return <primitive key={child.name} object={child.clone()} />;
+        // 섹션 없는 방 (거실, 욕실): 클릭 불가 + dim 효과만
+        return (
+          <DimmableRoom key={child.name} roomId={roomId}>
+            <primitive object={child} />
+          </DimmableRoom>
+        );
       })}
     </group>
   );

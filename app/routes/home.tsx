@@ -34,9 +34,11 @@ export default function Home() {
         {/* <DebugRoomPositions /> */}
       </SceneCanvas>
 
+      {/* TODO: Phase 4에서 콘텐츠 추가 후 활성화
       <ContentPanel>
         <p className="text-muted-foreground">섹션 콘텐츠가 여기에 표시됩니다.</p>
       </ContentPanel>
+      */}
     </div>
   );
 }
