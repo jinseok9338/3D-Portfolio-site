@@ -1,5 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSceneStore } from '~/stores/useSceneStore';
+import { useIsMobile } from '~/hooks/useIsMobile';
+
+// 키 코드 매핑
+const KEY_MAP = {
+  up: 'ArrowUp',
+  down: 'ArrowDown',
+  left: 'ArrowLeft',
+  right: 'ArrowRight',
+  a: 'x',       // A 버튼 = X 키
+  b: 'z',       // B 버튼 = Z 키
+  start: 'Enter',
+  select: 'Shift',
+};
 
 /**
  * 이스터에그 모달 - EmulatorJS GBA 게임
@@ -9,10 +22,64 @@ export function EasterEggModal() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const isMobile = useIsMobile();
 
   const handleClose = () => {
     setActiveModal(null);
   };
+
+  // 키 입력 시뮬레이션 - EmulatorJS용
+  const simulateKey = useCallback((key: string, type: 'down' | 'up') => {
+    // keyCode 매핑
+    const keyCodeMap: Record<string, number> = {
+      'ArrowUp': 38,
+      'ArrowDown': 40,
+      'ArrowLeft': 37,
+      'ArrowRight': 39,
+      'x': 88,
+      'z': 90,
+      'Enter': 13,
+      'Shift': 16,
+    };
+
+    const keyCode = keyCodeMap[key] || 0;
+
+    // 여러 방식으로 키 이벤트 발생
+    const eventInit = {
+      key,
+      code: key,
+      keyCode,
+      which: keyCode,
+      bubbles: true,
+      cancelable: true,
+    };
+
+    // 1. document에 디스패치
+    document.dispatchEvent(new KeyboardEvent(`key${type}`, eventInit));
+
+    // 2. window에 디스패치
+    window.dispatchEvent(new KeyboardEvent(`key${type}`, eventInit));
+
+    // 3. EmulatorJS 컨테이너에 디스패치
+    const container = document.getElementById('emulator-container');
+    if (container) {
+      container.dispatchEvent(new KeyboardEvent(`key${type}`, eventInit));
+      // canvas 요소에도 디스패치
+      const canvas = container.querySelector('canvas');
+      if (canvas) {
+        canvas.dispatchEvent(new KeyboardEvent(`key${type}`, eventInit));
+      }
+    }
+  }, []);
+
+  // 터치 이벤트 핸들러
+  const handleTouchStart = useCallback((key: keyof typeof KEY_MAP) => {
+    simulateKey(KEY_MAP[key], 'down');
+  }, [simulateKey]);
+
+  const handleTouchEnd = useCallback((key: keyof typeof KEY_MAP) => {
+    simulateKey(KEY_MAP[key], 'up');
+  }, [simulateKey]);
 
   useEffect(() => {
     // ESC 키로 닫기
@@ -26,6 +93,20 @@ export function EasterEggModal() {
   }, []);
 
   useEffect(() => {
+    // 모바일: EmulatorJS 기본 가상 게임패드 숨기기
+    const style = document.createElement('style');
+    style.id = 'hide-ejs-gamepad';
+    style.textContent = `
+      @media (max-width: 768px) {
+        #emulator-container [class*="virtualGamepad"],
+        #emulator-container [class*="virtual-gamepad"],
+        #emulator-container [class*="ejs_virtualGamepad"] {
+          display: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     // EmulatorJS 초기화
     try {
       // 전역 설정
@@ -36,6 +117,9 @@ export function EasterEggModal() {
       (window as any).EJS_startOnLoaded = true;
       (window as any).EJS_DEBUG_XX = false;
       (window as any).EJS_disableDatabaseRecovery = true;
+
+      // 모바일: EmulatorJS 기본 가상 게임패드 비활성화 (커스텀 컨트롤러 사용)
+      (window as any).EJS_VirtualGamepadSettings = false;
 
       // EmulatorJS 스크립트 로드
       const script = document.createElement('script');
@@ -93,6 +177,9 @@ export function EasterEggModal() {
         el.remove();
       });
 
+      // 주입한 CSS 제거
+      document.getElementById('hide-ejs-gamepad')?.remove();
+
       // EmulatorJS 전역 변수 정리
       delete (window as any).EJS_player;
       delete (window as any).EJS_gameUrl;
@@ -101,6 +188,7 @@ export function EasterEggModal() {
       delete (window as any).EJS_startOnLoaded;
       delete (window as any).EJS_DEBUG_XX;
       delete (window as any).EJS_disableDatabaseRecovery;
+      delete (window as any).EJS_VirtualGamepadSettings;
       delete (window as any).EJS_emulator;
       delete (window as any).EJS_GameManager;
     };
@@ -158,18 +246,99 @@ export function EasterEggModal() {
           )}
         </div>
 
-        {/* 조작 안내 */}
-        <div className="mt-4 text-center">
-          <div className="inline-flex gap-6 text-sm text-white/50">
-            <span>⬆️⬇️⬅️➡️ 이동</span>
-            <span>Z/X 버튼</span>
-            <span>Enter 시작</span>
+        {/* 모바일: 커스텀 터치 컨트롤러 */}
+        {isMobile && (
+          <div className="mt-4 flex justify-between items-center px-4">
+            {/* D-Pad */}
+            <div className="relative w-32 h-32">
+              {/* 위 */}
+              <button
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-10 bg-white/20 rounded-lg active:bg-white/40 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('up')}
+                onTouchEnd={() => handleTouchEnd('up')}
+              >
+                <span className="text-white text-lg">▲</span>
+              </button>
+              {/* 아래 */}
+              <button
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-10 bg-white/20 rounded-lg active:bg-white/40 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('down')}
+                onTouchEnd={() => handleTouchEnd('down')}
+              >
+                <span className="text-white text-lg">▼</span>
+              </button>
+              {/* 왼쪽 */}
+              <button
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 rounded-lg active:bg-white/40 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('left')}
+                onTouchEnd={() => handleTouchEnd('left')}
+              >
+                <span className="text-white text-lg">◀</span>
+              </button>
+              {/* 오른쪽 */}
+              <button
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 rounded-lg active:bg-white/40 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('right')}
+                onTouchEnd={() => handleTouchEnd('right')}
+              >
+                <span className="text-white text-lg">▶</span>
+              </button>
+            </div>
+
+            {/* Start/Select */}
+            <div className="flex flex-col gap-2">
+              <button
+                className="px-4 py-2 bg-white/20 rounded-lg active:bg-white/40 text-white text-xs"
+                onTouchStart={() => handleTouchStart('select')}
+                onTouchEnd={() => handleTouchEnd('select')}
+              >
+                SELECT
+              </button>
+              <button
+                className="px-4 py-2 bg-white/20 rounded-lg active:bg-white/40 text-white text-xs"
+                onTouchStart={() => handleTouchStart('start')}
+                onTouchEnd={() => handleTouchEnd('start')}
+              >
+                START
+              </button>
+            </div>
+
+            {/* A/B 버튼 */}
+            <div className="relative w-28 h-20">
+              {/* B 버튼 */}
+              <button
+                className="absolute left-0 bottom-0 w-12 h-12 bg-red-500/60 rounded-full active:bg-red-500/90 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('b')}
+                onTouchEnd={() => handleTouchEnd('b')}
+              >
+                <span className="text-white font-bold">B</span>
+              </button>
+              {/* A 버튼 */}
+              <button
+                className="absolute right-0 top-0 w-12 h-12 bg-green-500/60 rounded-full active:bg-green-500/90 flex items-center justify-center"
+                onTouchStart={() => handleTouchStart('a')}
+                onTouchEnd={() => handleTouchEnd('a')}
+              >
+                <span className="text-white font-bold">A</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* 조작 안내 - 데스크탑만 */}
+        {!isMobile && (
+          <div className="mt-4 text-center">
+            <div className="inline-flex gap-6 text-sm text-white/50">
+              <span>⬆️⬇️⬅️➡️ 이동</span>
+              <span>Z/X 버튼</span>
+              <span>Enter 시작</span>
+            </div>
+          </div>
+        )}
 
         {/* 닫기 안내 */}
         <div className="mt-2 text-center text-sm text-white/30">
-          <p>ESC 또는 바깥 클릭으로 닫기</p>
+          <p>{isMobile ? '바깥 터치로 닫기' : 'ESC 또는 바깥 클릭으로 닫기'}</p>
         </div>
       </div>
     </div>

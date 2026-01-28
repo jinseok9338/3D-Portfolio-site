@@ -49,7 +49,7 @@ export function ContactSection() {
       >
         <h2 className="text-xl font-bold">Contact</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          프로젝트 협업이나 채용 관련 문의를 환영합니다
+          편하게 연락주세요
         </p>
       </motion.div>
 
@@ -96,34 +96,6 @@ export function ContactSection() {
         <span>서울시 관악구, 대한민국</span>
       </motion.div>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="text-center"
-      >
-        <p className="text-sm text-muted-foreground mb-4">
-          새로운 기회에 열려 있습니다
-        </p>
-        <a
-          href="mailto:jinseok9338@gmail.com"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
-        >
-          <Mail className="w-4 h-4" />
-          이메일 보내기
-        </a>
-      </motion.div>
-
-      {/* 응답 시간 안내 */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="text-center text-xs text-muted-foreground"
-      >
-        보통 24시간 이내에 답변드립니다
-      </motion.p>
     </div>
   );
 }

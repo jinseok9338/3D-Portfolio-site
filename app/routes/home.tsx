@@ -17,6 +17,7 @@ import { SectionContent, getSectionTitle } from "~/components/sections";
 import { SectionIndicator } from "~/components/ui/SectionIndicator";
 import { BackToHomeButton } from "~/components/ui/BackToHomeButton";
 import { TutorialModal } from "~/components/ui/TutorialModal";
+import { TouchGuide } from "~/components/ui/TouchGuide";
 import { EasterEggModal, GalleryModal } from "~/components/modals";
 import { useSectionUrl } from "~/hooks/useSectionUrl";
 import { useSceneStore } from "~/stores/useSceneStore";
@@ -66,6 +67,9 @@ export default function Home() {
 
       {/* 튜토리얼 모달 (첫 방문 시) */}
       <TutorialModal />
+
+      {/* 터치 가이드 (모바일용) */}
+      <TouchGuide />
 
       {/* 섹션 콘텐츠 패널 (인터랙티브 오브젝트가 없는 방) */}
       {shouldShowSectionDrawer && (

@@ -14,15 +14,15 @@ type SectionContent = {
 const SECTION_CONTENT: Partial<Record<RoomId, SectionContent>> = {
   Room1: {
     title: 'About',
-    subtitle: '저를 소개합니다',
+    subtitle: '소개',
   },
   Room2: {
     title: 'Projects',
-    subtitle: '작업물을 확인해보세요',
+    subtitle: '작업물',
   },
   Room3: {
     title: 'Easter Egg',
-    subtitle: 'TV를 클릭해보세요 🎮',
+    subtitle: 'TV 눌러보기 🎮',
   },
   Room4: {
     title: 'Skills',
@@ -43,26 +43,32 @@ const SECTION_CONTENT: Partial<Record<RoomId, SectionContent>> = {
   },
   Room6: {
     title: 'Gallery',
-    subtitle: '거울/액자를 클릭해보세요 🖼️',
+    subtitle: '거울/액자 눌러보기 🖼️',
   },
   Room7: {
     title: 'Hobby',
-    subtitle: '취미 생활',
+    subtitle: '취미',
     items: [
       { label: '운동', value: '헬스, 러닝' },
-      { label: '게임', value: '인디 게임, 레트로 게임' },
-      { label: '음악', value: '기타 연주' },
+      { label: '게임', value: '인디, 레트로' },
+      { label: '음악', value: '기타' },
     ],
   },
 };
 
 /**
  * 현재 선택된 방의 섹션 정보를 왼쪽에 표시
+ * 모바일에서 drawer가 열리면 숨김
  */
 export function SectionIndicator() {
   const activeRoom = useSceneStore((state) => state.activeRoom);
+  const activeSection = useSceneStore((state) => state.activeSection);
+  const activeObject = useSceneStore((state) => state.activeObject);
 
   const content = activeRoom ? SECTION_CONTENT[activeRoom] : null;
+
+  // 모바일에서 drawer가 열려있으면 숨김 (CSS로도 처리)
+  const isDrawerOpen = activeSection !== null || activeObject !== null;
 
   return (
     <AnimatePresence>
@@ -72,7 +78,7 @@ export function SectionIndicator() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed left-6 top-1/2 -translate-y-1/2 z-10 max-w-[280px]"
+          className={`fixed left-6 top-1/2 -translate-y-1/2 z-10 max-w-[280px] ${isDrawerOpen ? 'hidden md:block' : ''}`}
         >
           <div className="flex flex-col gap-3">
             {/* 타이틀 */}
