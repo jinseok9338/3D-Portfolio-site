@@ -44,9 +44,12 @@ export default function Home() {
   // 오브젝트 drawer를 표시할지 확인 (Room1, Room2에서 오브젝트 클릭 시)
   const shouldShowObjectDrawer = activeObject !== null;
 
+  // 모달이 열려있으면 3D 렌더링 일시정지 (성능 최적화)
+  const shouldPauseCanvas = activeModal !== null;
+
   return (
     <div className="h-screen w-screen">
-      <SceneCanvas>
+      <SceneCanvas paused={shouldPauseCanvas}>
         <Environment />
         <Lighting />
         <StarParticles count={2000} speed={0.3} />
