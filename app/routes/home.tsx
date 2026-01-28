@@ -28,10 +28,16 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// 오브젝트 인터랙션이 있는 섹션 (drawer 사용 안 함)
+const OBJECT_INTERACTION_SECTIONS = ['about', 'projects'];
+
 export default function Home() {
   useSectionUrl();
   const activeSection = useSceneStore((state) => state.activeSection);
   const activeModal = useSceneStore((state) => state.activeModal);
+
+  // drawer로 fallback할 섹션인지 확인
+  const shouldShowDrawer = activeSection && !OBJECT_INTERACTION_SECTIONS.includes(activeSection);
 
   return (
     <div className="h-screen w-screen">
@@ -57,10 +63,12 @@ export default function Home() {
       {/* 튜토리얼 모달 (첫 방문 시) */}
       <TutorialModal />
 
-      {/* 콘텐츠 패널 */}
-      <ContentPanel title={getSectionTitle(activeSection)}>
-        <SectionContent />
-      </ContentPanel>
+      {/* 콘텐츠 패널 (인터랙티브 오브젝트가 없는 방만) */}
+      {shouldShowDrawer && (
+        <ContentPanel title={getSectionTitle(activeSection)}>
+          <SectionContent />
+        </ContentPanel>
+      )}
 
       {/* 이스터에그/갤러리 모달 (R3F 외부에서 렌더링) */}
       {activeModal === 'easter-egg' && <EasterEggModal />}

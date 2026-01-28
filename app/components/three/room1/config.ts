@@ -55,38 +55,40 @@ export function getMeshObjectId(meshName: string): Room1ObjectId | null {
   return null;
 }
 
-// 오브젝트별 콘텐츠 (나중에 실제 데이터로 교체)
+// 오브젝트별 콘텐츠
 export const ROOM1_CONTENTS: Record<Room1ObjectId, ObjectContent<Room1ObjectId>> = {
   computer: {
     id: 'computer',
     title: '안녕하세요!',
-    description: '저는 프론트엔드 개발자입니다. 사용자 경험을 중시하며, 인터랙티브한 웹을 만드는 것을 좋아합니다.',
+    description: '6년차 프론트엔드 개발자 서진석입니다. React/TypeScript 기반의 대규모 서비스 설계부터 운영까지 경험이 있으며, 성능 최적화와 아키텍처 설계에 강점이 있습니다.',
     links: [
-      { label: 'GitHub', url: 'https://github.com', icon: 'github' },
-      { label: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
-      { label: 'Email', url: 'mailto:hello@example.com', icon: 'mail' },
+      { label: 'GitHub', url: 'https://github.com/jinseok9338', icon: 'github' },
+      { label: 'LinkedIn', url: 'https://www.linkedin.com/in/jinseok9338/', icon: 'linkedin' },
+      { label: 'Email', url: 'mailto:jinseok9338@gmail.com', icon: 'mail' },
     ],
   },
   desk: {
     id: 'desk',
     title: '경력',
     items: [
-      { label: '2024 - 현재', value: '프론트엔드 개발자 @ 스타트업' },
-      { label: '2022 - 2024', value: '주니어 개발자 @ 테크 회사' },
-      { label: '2018 - 2022', value: '컴퓨터 공학 전공' },
+      { label: '2024.04 - 현재', value: '주식회사 앵커스 | Front-end Engineer & PM' },
+      { label: '2022.12 - 2023.10', value: '주식회사 레이첼블루 | Front-end Engineer' },
+      { label: '2018.01 - 2020.04', value: '(주)서샘영어 | 개발자' },
     ],
   },
   shelf: {
     id: 'shelf',
-    title: '기술 스택',
+    title: '자격증 & 학력',
     tags: [
-      'React', 'TypeScript', 'Next.js', 'Three.js',
-      'Tailwind CSS', 'Node.js', 'GraphQL', 'PostgreSQL',
+      'AWS Solution Architect',
+      'AWS Cloud Practitioner',
+      'TOEIC 965',
     ],
+    description: 'Portland Community College - Computer Science (2012-2015)',
   },
   telescope: {
     id: 'telescope',
-    title: '목표',
-    description: '사용자에게 즐거운 경험을 주는 인터랙티브한 웹 애플리케이션을 만들고 싶습니다. 새로운 기술을 배우고 적용하는 것을 즐깁니다.',
+    title: '주요 성과',
+    description: '앱 로딩 시간 7초 → 2초 (60% 단축) | 이벤트당 20억원+ 매출 플랫폼 구축 | GKE 멀티테넌트 아키텍처 설계 | DIOR, Burberry, Celine 등 글로벌 럭셔리 브랜드 고객사 확보',
   },
 };

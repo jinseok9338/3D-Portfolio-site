@@ -73,44 +73,53 @@ export function getMeshObjectId(meshName: string): Room2ObjectId | null {
   return null;
 }
 
-// 오브젝트별 콘텐츠 (나중에 실제 데이터로 교체)
+// 오브젝트별 콘텐츠
 export const ROOM2_CONTENTS: Record<Room2ObjectId, ObjectContent<Room2ObjectId>> = {
   laptop: {
     id: 'laptop',
-    title: '프로젝트 목록',
-    description: '제가 작업한 주요 프로젝트들입니다.',
+    title: '주요 프로젝트',
+    description: '제가 리드하거나 핵심 역할을 맡은 프로젝트들입니다.',
     projects: [
       {
-        name: 'Portfolio Site',
-        description: '3D 인터랙티브 포트폴리오',
-        tech: ['React', 'Three.js', 'TypeScript'],
-        link: '#',
+        name: '미소 원앱 프로젝트',
+        description: 'React Native + Module Federation 기반 원앱 전환, 로딩 시간 60% 단축',
+        tech: ['React Native', 'Re.Pack', 'Module Federation', 'Hermes'],
       },
       {
-        name: 'Project 2',
-        description: '프로젝트 설명',
-        tech: ['React', 'Node.js'],
-        link: '#',
+        name: '럭셔리 브랜드 내부몰',
+        description: 'DIOR, Burberry, Celine 등 LVMH 계열 글로벌 브랜드 플랫폼',
+        tech: ['React', 'TanStack Query', 'GKE', 'Helm'],
       },
     ],
   },
   corkboard: {
     id: 'corkboard',
-    title: '진행 중인 작업',
-    description: '현재 작업 중이거나 계획 중인 프로젝트들입니다.',
-    items: [
-      { label: '진행 중', value: 'Portfolio Site 개선' },
-      { label: '계획 중', value: '오픈소스 기여' },
-      { label: '아이디어', value: '새로운 SaaS 프로젝트' },
+    title: '이전 프로젝트',
+    description: '과거에 수행한 프로젝트들입니다.',
+    projects: [
+      {
+        name: '현대건설 하이빌더 TFT',
+        description: '약 20억 규모 플랫폼 안정화, 200건+ 이슈 해결',
+        tech: ['jQuery', 'Spring Boot', 'MyBatis', 'MSSQL'],
+      },
+      {
+        name: '학원 재원생 관리 시스템',
+        description: '출석/납부 관리 시스템 (영어 강사 → 개발자 전환 계기)',
+        tech: ['React', 'Express', 'Firebase', 'Cloud Functions'],
+      },
     ],
   },
   bookshelf: {
     id: 'bookshelf',
-    title: '기술 스택',
-    description: '프로젝트에서 사용하는 기술들입니다.',
+    title: '프로젝트 기술 스택',
+    description: '프로젝트에서 사용한 주요 기술들입니다.',
     tags: [
-      'React', 'TypeScript', 'Next.js', 'Three.js',
-      'Node.js', 'PostgreSQL', 'Docker', 'AWS',
+      'React', 'React Native', 'TypeScript', 'Next.js',
+      'TanStack Query', 'Module Federation', 'Vite', 'Webpack',
+      'GKE', 'Helm', 'Docker', 'PostgreSQL', 'Redis',
+    ],
+    links: [
+      { label: 'GitHub', url: 'https://github.com/jinseok9338', icon: 'github' },
     ],
   },
 };
