@@ -30,7 +30,7 @@ export function EasterEggModal() {
     try {
       // 전역 설정
       (window as any).EJS_player = '#emulator-container';
-      (window as any).EJS_gameUrl = '/roms/blastarenaadvance.gba';
+      (window as any).EJS_gameUrl = '/roms/goodboy-galaxy.gba';
       (window as any).EJS_core = 'gba';
       (window as any).EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
       (window as any).EJS_startOnLoaded = true;
@@ -94,7 +94,7 @@ export function EasterEggModal() {
 
         {/* 헤더 */}
         <div className="text-center mb-4">
-          <h2 className="text-xl font-bold text-white mb-1">🎮 Blast Arena Advance</h2>
+          <h2 className="text-xl font-bold text-white mb-1">🎮 Goodboy Galaxy</h2>
           <p className="text-white/60 text-sm">이스터에그를 발견하셨네요!</p>
         </div>
 
