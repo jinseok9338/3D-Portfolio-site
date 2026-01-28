@@ -15,7 +15,7 @@ export function SceneCanvas({ children, paused = false, ...props }: SceneCanvasP
 
   return (
     <Canvas
-      dpr={isMobile ? 1 : [1, 2]}
+      dpr={[1, 2]}
       frameloop={paused ? 'demand' : 'always'}
       gl={{
         antialias: !isMobile,
