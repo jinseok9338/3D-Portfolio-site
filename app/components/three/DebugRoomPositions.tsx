@@ -17,7 +17,20 @@ function findScene1(obj: Object3D): Object3D | null {
 const MODEL_SCALE = 0.003;
 const MODEL_OFFSET_Y = 0;
 
+/**
+ * 각 방의 월드 좌표를 콘솔에 출력하는 디버그 컴포넌트
+ * Production에서는 렌더링하지 않음
+ */
 export function DebugRoomPositions() {
+  // Production에서는 아무것도 하지 않음
+  if (import.meta.env.PROD) {
+    return null;
+  }
+
+  return <DebugRoomPositionsContent />;
+}
+
+function DebugRoomPositionsContent() {
   const { scene } = useGLTF('/models/low_poly_isometric_rooms.glb');
 
   useEffect(() => {

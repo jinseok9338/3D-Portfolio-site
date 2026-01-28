@@ -15,8 +15,18 @@ type RoomValues = {
 
 /**
  * Leva GUI를 사용한 카메라 디버거
+ * Production에서는 렌더링하지 않음
  */
 export function CameraDebugger() {
+  // Production에서는 아무것도 렌더링하지 않음
+  if (import.meta.env.PROD) {
+    return null;
+  }
+
+  return <CameraDebuggerContent />;
+}
+
+function CameraDebuggerContent() {
   const setCameraTarget = useSceneStore((state) => state.setCameraTarget);
 
   // 각 방의 최신 값을 저장할 ref
