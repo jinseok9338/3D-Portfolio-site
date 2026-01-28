@@ -56,10 +56,43 @@ export function EasterEggModal() {
     }
 
     return () => {
-      // 클린업
-      if (scriptRef.current) {
-        document.body.removeChild(scriptRef.current);
+      // EmulatorJS 인스턴스 종료
+      try {
+        const emulator = (window as any).EJS_emulator;
+        if (emulator) {
+          // 게임 일시정지
+          if (typeof emulator.pause === 'function') {
+            emulator.pause();
+          }
+          // 오디오 컨텍스트 종료
+          if (emulator.gameManager?.audioContext) {
+            emulator.gameManager.audioContext.close();
+          }
+          // 에뮬레이터 종료
+          if (typeof emulator.stop === 'function') {
+            emulator.stop();
+          }
+        }
+      } catch (e) {
+        console.warn('EmulatorJS cleanup error:', e);
       }
+
+      // 컨테이너 내부 정리
+      const container = document.getElementById('emulator-container');
+      if (container) {
+        container.innerHTML = '';
+      }
+
+      // 스크립트 제거
+      if (scriptRef.current && scriptRef.current.parentNode) {
+        scriptRef.current.parentNode.removeChild(scriptRef.current);
+      }
+
+      // EmulatorJS가 생성한 모든 스크립트/스타일 제거
+      document.querySelectorAll('script[src*="emulatorjs"], link[href*="emulatorjs"]').forEach(el => {
+        el.remove();
+      });
+
       // EmulatorJS 전역 변수 정리
       delete (window as any).EJS_player;
       delete (window as any).EJS_gameUrl;
@@ -69,6 +102,7 @@ export function EasterEggModal() {
       delete (window as any).EJS_DEBUG_XX;
       delete (window as any).EJS_disableDatabaseRecovery;
       delete (window as any).EJS_emulator;
+      delete (window as any).EJS_GameManager;
     };
   }, []);
 

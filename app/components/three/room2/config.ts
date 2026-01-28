@@ -78,45 +78,93 @@ export const ROOM2_CONTENTS: Record<Room2ObjectId, ObjectContent<Room2ObjectId>>
   laptop: {
     id: 'laptop',
     title: '주요 프로젝트',
-    description: '제가 리드하거나 핵심 역할을 맡은 프로젝트들입니다.',
+    subtitle: 'Featured Projects',
+    description: '기술 리드 또는 핵심 개발자로 참여한 프로젝트입니다.',
     projects: [
       {
         name: '미소 원앱 프로젝트',
-        description: 'React Native + Module Federation 기반 원앱 전환, 로딩 시간 60% 단축',
-        tech: ['React Native', 'Re.Pack', 'Module Federation', 'Hermes'],
+        role: 'Tech Lead & PM',
+        period: '2024.04 - 현재',
+        description: '4개의 독립된 앱을 하나의 슈퍼앱으로 통합하는 프로젝트. Module Federation을 React Native에 적용하여 코드 공유와 독립 배포를 동시에 달성했습니다.',
+        highlights: [
+          '앱 로딩 시간 7초 → 2초 (60% 단축)',
+          'Re.Pack + Hermes 엔진 최적화',
+          '4개 팀 간 코드 공유 아키텍처 설계',
+          '주간 릴리즈 자동화 파이프라인 구축',
+        ],
+        tech: ['React Native', 'Re.Pack', 'Module Federation', 'Hermes', 'TypeScript'],
       },
       {
         name: '럭셔리 브랜드 내부몰',
-        description: 'DIOR, Burberry, Celine 등 LVMH 계열 글로벌 브랜드 플랫폼',
-        tech: ['React', 'TanStack Query', 'GKE', 'Helm'],
+        role: 'Frontend Lead',
+        period: '2024.04 - 현재',
+        description: 'DIOR, Burberry, Celine 등 LVMH 계열 글로벌 럭셔리 브랜드의 직원 전용 쇼핑 플랫폼입니다.',
+        highlights: [
+          '이벤트당 20억원+ 매출 달성',
+          'GKE 기반 멀티테넌트 아키텍처 설계',
+          'Helm 차트로 브랜드별 독립 배포 환경 구축',
+          '5개 글로벌 브랜드 고객사 확보',
+        ],
+        tech: ['React', 'TanStack Query', 'GKE', 'Helm', 'PostgreSQL', 'Redis'],
       },
     ],
   },
   corkboard: {
     id: 'corkboard',
     title: '이전 프로젝트',
-    description: '과거에 수행한 프로젝트들입니다.',
+    subtitle: 'Past Projects',
+    description: '개발자로서 성장하는 데 중요한 역할을 한 프로젝트들입니다.',
     projects: [
       {
         name: '현대건설 하이빌더 TFT',
-        description: '약 20억 규모 플랫폼 안정화, 200건+ 이슈 해결',
-        tech: ['jQuery', 'Spring Boot', 'MyBatis', 'MSSQL'],
+        role: 'Frontend Engineer',
+        period: '2022.12 - 2023.10',
+        description: '약 20억 규모의 건설 프로젝트 관리 플랫폼 안정화 및 기능 개선 프로젝트입니다.',
+        highlights: [
+          '200건 이상의 레거시 이슈 해결',
+          'jQuery → React 점진적 마이그레이션 주도',
+          '성능 모니터링 대시보드 구축',
+          '코드 리뷰 문화 도입 및 정착',
+        ],
+        tech: ['React', 'jQuery', 'Spring Boot', 'MyBatis', 'MSSQL'],
       },
       {
         name: '학원 재원생 관리 시스템',
-        description: '출석/납부 관리 시스템 (영어 강사 → 개발자 전환 계기)',
+        role: 'Full-stack Developer',
+        period: '2018.01 - 2020.04',
+        description: '영어 강사로 일하면서 직접 개발한 학원 관리 시스템. 이 프로젝트가 개발자로 전환하는 계기가 되었습니다.',
+        highlights: [
+          '출석/납부 관리 자동화',
+          '행정 업무 50% 절감',
+          '학부모 알림 시스템 구축',
+          'Firebase 실시간 데이터 동기화',
+        ],
         tech: ['React', 'Express', 'Firebase', 'Cloud Functions'],
       },
     ],
   },
   bookshelf: {
     id: 'bookshelf',
-    title: '프로젝트 기술 스택',
-    description: '프로젝트에서 사용한 주요 기술들입니다.',
-    tags: [
-      'React', 'React Native', 'TypeScript', 'Next.js',
-      'TanStack Query', 'Module Federation', 'Vite', 'Webpack',
-      'GKE', 'Helm', 'Docker', 'PostgreSQL', 'Redis',
+    title: '기술 스택',
+    subtitle: 'Tech Stack',
+    description: '프로젝트에서 사용한 기술들을 카테고리별로 정리했습니다.',
+    tagGroups: [
+      {
+        category: 'Frontend',
+        items: ['React', 'React Native', 'Next.js', 'TypeScript', 'TanStack Query', 'Zustand'],
+      },
+      {
+        category: 'Build & Deploy',
+        items: ['Vite', 'Webpack', 'Re.Pack', 'Module Federation', 'Docker', 'Helm'],
+      },
+      {
+        category: 'Cloud & Infra',
+        items: ['GKE', 'AWS', 'Firebase', 'Cloudflare', 'PostgreSQL', 'Redis'],
+      },
+      {
+        category: 'Tools',
+        items: ['Git', 'GitHub Actions', 'Jira', 'Figma', 'Sentry', 'Datadog'],
+      },
     ],
     links: [
       { label: 'GitHub', url: 'https://github.com/jinseok9338', icon: 'github' },

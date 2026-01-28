@@ -12,7 +12,7 @@ import {
   Room3InteractiveObjects,
   Room6InteractiveObjects,
 } from "~/components/three";
-import { ContentPanel } from "~/components/panels";
+import { ContentPanel, ObjectDrawerContent, getObjectTitle } from "~/components/panels";
 import { SectionContent, getSectionTitle } from "~/components/sections";
 import { SectionIndicator } from "~/components/ui/SectionIndicator";
 import { BackToHomeButton } from "~/components/ui/BackToHomeButton";
@@ -28,16 +28,20 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// 오브젝트 인터랙션이 있는 섹션 (drawer 사용 안 함)
+// 오브젝트 인터랙션이 있는 섹션 (섹션 drawer 사용 안 함, 오브젝트 drawer 사용)
 const OBJECT_INTERACTION_SECTIONS = ['about', 'projects'];
 
 export default function Home() {
   useSectionUrl();
   const activeSection = useSceneStore((state) => state.activeSection);
+  const activeObject = useSceneStore((state) => state.activeObject);
   const activeModal = useSceneStore((state) => state.activeModal);
 
-  // drawer로 fallback할 섹션인지 확인
-  const shouldShowDrawer = activeSection && !OBJECT_INTERACTION_SECTIONS.includes(activeSection);
+  // 섹션 drawer로 fallback할 섹션인지 확인 (오브젝트 인터랙션 없는 방)
+  const shouldShowSectionDrawer = activeSection && !OBJECT_INTERACTION_SECTIONS.includes(activeSection);
+
+  // 오브젝트 drawer를 표시할지 확인 (Room1, Room2에서 오브젝트 클릭 시)
+  const shouldShowObjectDrawer = activeObject !== null;
 
   return (
     <div className="h-screen w-screen">
@@ -63,10 +67,17 @@ export default function Home() {
       {/* 튜토리얼 모달 (첫 방문 시) */}
       <TutorialModal />
 
-      {/* 콘텐츠 패널 (인터랙티브 오브젝트가 없는 방만) */}
-      {shouldShowDrawer && (
+      {/* 섹션 콘텐츠 패널 (인터랙티브 오브젝트가 없는 방) */}
+      {shouldShowSectionDrawer && (
         <ContentPanel title={getSectionTitle(activeSection)}>
           <SectionContent />
+        </ContentPanel>
+      )}
+
+      {/* 오브젝트 콘텐츠 패널 (Room1, Room2 오브젝트 클릭 시) */}
+      {shouldShowObjectDrawer && (
+        <ContentPanel title={getObjectTitle(activeObject)} objectMode>
+          <ObjectDrawerContent />
         </ContentPanel>
       )}
 

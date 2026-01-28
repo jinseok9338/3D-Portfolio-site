@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Button } from '~/components/ui/button';
@@ -7,6 +7,8 @@ import { useSceneStore } from '~/stores/useSceneStore';
 type ContentPanelProps = {
   children: ReactNode;
   title?: string;
+  // 오브젝트 모드: true면 ESC로 drawer만 닫음 (방 유지)
+  objectMode?: boolean;
 };
 
 const panelVariants = {
@@ -32,31 +34,46 @@ const panelVariants = {
   },
 };
 
-const overlayVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-  exit: { opacity: 0 },
-};
-
-export function ContentPanel({ children, title }: ContentPanelProps) {
+export function ContentPanel({ children, title, objectMode = false }: ContentPanelProps) {
   const activeSection = useSceneStore((state) => state.activeSection);
+  const activeObject = useSceneStore((state) => state.activeObject);
   const clearSection = useSceneStore((state) => state.clearSection);
-  const isOpen = activeSection !== null;
+  const closeDrawer = useSceneStore((state) => state.closeDrawer);
+
+  // 패널이 열려있는지 확인 (섹션 모드 또는 오브젝트 모드)
+  const isOpen = objectMode ? activeObject !== null : activeSection !== null;
+
+  // 닫기 핸들러 - 모드에 따라 다르게 동작
+  const handleClose = () => {
+    if (objectMode) {
+      closeDrawer(); // drawer만 닫기 (방 유지)
+    } else {
+      clearSection(); // 섹션 전체 닫기 (홈으로)
+    }
+  };
+
+  // ESC 키 핸들러
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        handleClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+    };
+  }, [isOpen, objectMode]);
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* 배경 오버레이 */}
-          <motion.div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-            variants={overlayVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={clearSection}
-          />
-
           {/* 패널 */}
           <motion.div
             className="fixed right-0 top-0 h-full w-full max-w-lg bg-background/95 backdrop-blur-md shadow-2xl z-50 overflow-y-auto"
@@ -67,13 +84,13 @@ export function ContentPanel({ children, title }: ContentPanelProps) {
           >
             {/* 헤더 */}
             <div className="sticky top-0 flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-sm">
-              <h2 className="text-xl font-semibold capitalize">
-                {title || activeSection}
+              <h2 className="text-xl font-semibold">
+                {title || activeSection || ''}
               </h2>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={clearSection}
+                onClick={handleClose}
                 aria-label="Close panel"
               >
                 <X className="h-5 w-5" />

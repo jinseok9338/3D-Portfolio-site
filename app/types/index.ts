@@ -36,16 +36,44 @@ export type RoomObjectId = Room1ObjectId | Room2ObjectId | Room3ObjectId | Room6
 export type ObjectContent<T extends string = string> = {
   id: T;
   title: string;
+  subtitle?: string;
   description?: string;
-  items?: Array<{ label: string; value: string }>;
+  // 경력용 타임라인 아이템
+  items?: Array<{
+    label: string;
+    value: string;
+    description?: string;
+    highlights?: string[];
+  }>;
   links?: Array<{ label: string; url: string; icon?: string }>;
+  // 태그 (카테고리별 그룹화 가능)
   tags?: string[];
-  // 프로젝트용 추가 필드
+  tagGroups?: Array<{
+    category: string;
+    items: string[];
+  }>;
+  // 프로젝트용 필드
   projects?: Array<{
     name: string;
     description: string;
+    role?: string;
+    period?: string;
     tech?: string[];
+    highlights?: string[];
     link?: string;
+  }>;
+  // 성과 지표
+  metrics?: Array<{
+    label: string;
+    value: string;
+    icon?: string;
+  }>;
+  // 자격증/학력
+  credentials?: Array<{
+    name: string;
+    issuer?: string;
+    date?: string;
+    icon?: string;
   }>;
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useSceneStore } from '~/stores/useSceneStore';
-import { ROOM2_INTERACTIVE_MESHES, ROOM2_OBJECT_MESHES, getMeshObjectId, ROOM2_CONTENTS } from './config';
+import { ROOM2_INTERACTIVE_MESHES, ROOM2_OBJECT_MESHES, getMeshObjectId } from './config';
 import type { Room2ObjectId } from '~/types';
 import type { Mesh, MeshStandardMaterial } from 'three';
 import { Color } from 'three';
@@ -164,7 +164,6 @@ export function Room2InteractiveObjects() {
   }
 
   const isRoom2Hovered = hoveredObject && ['laptop', 'corkboard', 'bookshelf'].includes(hoveredObject);
-  const isRoom2Active = activeObject && ['laptop', 'corkboard', 'bookshelf'].includes(activeObject);
 
   return (
     <>
@@ -181,133 +180,7 @@ export function Room2InteractiveObjects() {
           </div>
         </Html>
       )}
-
-      {/* 클릭 시 상세 말풍선 표시 */}
-      {isRoom2Active && objectPosition && (
-        <Html
-          position={[objectPosition[0], objectPosition[1] + 0.3, objectPosition[2]]}
-          center
-          distanceFactor={2}
-          style={{ pointerEvents: 'auto' }}
-        >
-          <ObjectTooltip
-            content={ROOM2_CONTENTS[activeObject as Room2ObjectId]}
-            onClose={clearObject}
-          />
-        </Html>
-      )}
+      {/* 클릭 시 drawer가 열림 (home.tsx에서 처리) */}
     </>
-  );
-}
-
-// 말풍선 컴포넌트
-function ObjectTooltip({
-  content,
-  onClose,
-}: {
-  content: typeof ROOM2_CONTENTS[Room2ObjectId];
-  onClose: () => void;
-}) {
-  return (
-    <div
-      className="bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-xl p-4 min-w-[280px] max-w-[360px]"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold text-foreground">{content.title}</h3>
-        <button
-          onClick={onClose}
-          className="text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      {/* 설명 */}
-      {content.description && (
-        <p className="text-sm text-muted-foreground mb-3">{content.description}</p>
-      )}
-
-      {/* 프로젝트 리스트 */}
-      {content.projects && (
-        <div className="space-y-3 mb-3">
-          {content.projects.map((project, idx) => (
-            <div key={idx} className="p-2 bg-muted/50 rounded-md">
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-foreground">{project.name}</span>
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline"
-                  >
-                    View →
-                  </a>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{project.description}</p>
-              {project.tech && (
-                <div className="flex flex-wrap gap-1 mt-1.5">
-                  {project.tech.map((t) => (
-                    <span key={t} className="px-1.5 py-0.5 text-[10px] bg-primary/10 text-primary rounded">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* 아이템 리스트 */}
-      {content.items && (
-        <ul className="space-y-2 mb-3">
-          {content.items.map((item, idx) => (
-            <li key={idx} className="text-sm">
-              <span className="text-muted-foreground">{item.label}</span>
-              <br />
-              <span className="text-foreground">{item.value}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* 태그 (기술 스택용) */}
-      {content.tags && (
-        <div className="flex flex-wrap gap-1.5">
-          {content.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* 링크 */}
-      {content.links && (
-        <div className="flex gap-2 mt-3">
-          {content.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
   );
 }

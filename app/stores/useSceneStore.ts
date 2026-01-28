@@ -34,6 +34,7 @@ type SceneActions = {
   // Room 내부 오브젝트 액션
   setActiveObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
   clearObject: () => void;
+  closeDrawer: () => void; // drawer만 닫기 (방 유지)
   setHoveredObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
   setActiveModal: (modal: ModalType) => void;
   reset: () => void;
@@ -76,6 +77,9 @@ export const useSceneStore = create<SceneState & SceneActions>((set) => ({
   }),
 
   clearObject: () => set({ activeObject: null, objectPosition: null }),
+
+  // drawer만 닫기 (방에 머물러 있음)
+  closeDrawer: () => set({ activeObject: null, objectPosition: null }),
 
   setHoveredObject: (objectId, position) => set({
     hoveredObject: objectId,
