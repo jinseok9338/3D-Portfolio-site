@@ -38,8 +38,8 @@ export const ROOM_CONFIG: Record<RoomId, RoomConfig> = {
   Room6: {
     section: null, // 욕실 - 갤러리
     label: '욕실',
-    cameraPosition: [1.9, 0.6, -1],
-    cameraTarget: [0.255, -0.886, 0.62],
+    cameraPosition: [2.5, 0.7, -1.2],
+    cameraTarget: [0.205, -1, 0.53],
   },
   Room7: {
     section: 'hobby',

@@ -1,8 +1,8 @@
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useSceneStore } from '~/stores/useSceneStore';
-import { ROOM6_INTERACTIVE_MESHES, ROOM6_OBJECT_MESHES, getMeshObjectId, HOVER_LABELS, GALLERY_IMAGES } from './config';
+import { ROOM6_INTERACTIVE_MESHES, ROOM6_OBJECT_MESHES, getMeshObjectId, HOVER_LABELS } from './config';
 import type { Room6ObjectId } from '~/types';
 import type { Mesh, MeshStandardMaterial } from 'three';
 import { Color } from 'three';
@@ -13,16 +13,17 @@ const EMISSIVE_INTENSITY = 0.3;
 
 /**
  * Room6 (욕실) 갤러리
- * - 거울/액자 클릭 시 갤러리 모달 표시
+ * - 거울/액자 클릭 시 갤러리 모달 표시 (store를 통해)
  */
 export function Room6InteractiveObjects() {
   const { scene, camera, raycaster, pointer } = useThree();
   const activeRoom = useSceneStore((state) => state.activeRoom);
+  const activeModal = useSceneStore((state) => state.activeModal);
   const hoveredObject = useSceneStore((state) => state.hoveredObject);
   const hoverPosition = useSceneStore((state) => state.hoverPosition);
   const setHoveredObject = useSceneStore((state) => state.setHoveredObject);
+  const setActiveModal = useSceneStore((state) => state.setActiveModal);
 
-  const [showGallery, setShowGallery] = useState(false);
   const lastHoveredRef = useRef<Room6ObjectId | null>(null);
   const highlightedMeshesRef = useRef<Mesh[]>([]);
 
@@ -107,11 +108,11 @@ export function Room6InteractiveObjects() {
     for (const intersect of intersects) {
       const meshName = intersect.object.name;
       if (ROOM6_INTERACTIVE_MESHES.has(meshName)) {
-        setShowGallery(true);
+        setActiveModal('gallery');
         return;
       }
     }
-  }, [raycaster, pointer, camera, scene]);
+  }, [raycaster, pointer, camera, scene, setActiveModal]);
 
   useEffect(() => {
     const canvas = document.querySelector('canvas');
@@ -129,11 +130,12 @@ export function Room6InteractiveObjects() {
   }
 
   const isRoom6Hovered = hoveredObject && ['mirror', 'pictures'].includes(hoveredObject);
+  const isModalOpen = activeModal !== null;
 
   return (
     <>
       {/* Hover 레이블 */}
-      {isRoom6Hovered && hoverPosition && !showGallery && (
+      {isRoom6Hovered && hoverPosition && !isModalOpen && (
         <Html
           position={[hoverPosition[0], hoverPosition[1] + 0.15, hoverPosition[2]]}
           center
@@ -145,97 +147,6 @@ export function Room6InteractiveObjects() {
           </div>
         </Html>
       )}
-
-      {/* 갤러리 모달 */}
-      {showGallery && (
-        <Html fullscreen>
-          <GalleryModal onClose={() => setShowGallery(false)} />
-        </Html>
-      )}
     </>
-  );
-}
-
-// 갤러리 모달 컴포넌트
-function GalleryModal({ onClose }: { onClose: () => void }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // ESC 키로 닫기
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      } else if (e.key === 'ArrowLeft') {
-        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : GALLERY_IMAGES.length - 1));
-      } else if (e.key === 'ArrowRight') {
-        setCurrentIndex((prev) => (prev < GALLERY_IMAGES.length - 1 ? prev + 1 : 0));
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-      onClick={onClose}
-    >
-      <div
-        className="relative max-w-4xl w-full mx-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          className="absolute -top-12 right-0 text-white/70 hover:text-white"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-
-        {/* 이미지 영역 */}
-        <div className="aspect-video bg-black/50 rounded-lg flex items-center justify-center border border-white/10">
-          <div className="text-center">
-            <p className="text-pink-400 text-lg mb-2">🖼️ Gallery</p>
-            <p className="text-white/70 text-sm">이미지가 여기에 표시됩니다</p>
-            <p className="text-white/50 text-xs mt-2">{currentIndex + 1} / {GALLERY_IMAGES.length}</p>
-          </div>
-        </div>
-
-        {/* 네비게이션 */}
-        <div className="flex justify-between items-center mt-4">
-          <button
-            onClick={() => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : GALLERY_IMAGES.length - 1))}
-            className="px-4 py-2 text-white/70 hover:text-white transition-colors"
-          >
-            ← 이전
-          </button>
-          <div className="flex gap-2">
-            {GALLERY_IMAGES.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  idx === currentIndex ? 'bg-pink-500' : 'bg-white/30 hover:bg-white/50'
-                }`}
-              />
-            ))}
-          </div>
-          <button
-            onClick={() => setCurrentIndex((prev) => (prev < GALLERY_IMAGES.length - 1 ? prev + 1 : 0))}
-            className="px-4 py-2 text-white/70 hover:text-white transition-colors"
-          >
-            다음 →
-          </button>
-        </div>
-
-        {/* 안내 */}
-        <div className="mt-4 text-center text-sm text-white/50">
-          <p>← → 키로 이동 | ESC로 닫기</p>
-        </div>
-      </div>
-    </div>
   );
 }

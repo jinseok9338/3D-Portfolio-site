@@ -8,6 +8,8 @@ type CameraTarget = {
   target: [number, number, number];
 } | null;
 
+type ModalType = 'easter-egg' | 'gallery' | null;
+
 type SceneState = {
   activeSection: SectionType;
   activeRoom: RoomId | null;
@@ -19,6 +21,8 @@ type SceneState = {
   // Hover 상태
   hoveredObject: RoomObjectId | null;
   hoverPosition: [number, number, number] | null;
+  // 모달 상태 (R3F 외부에서 렌더링)
+  activeModal: ModalType;
 };
 
 type SceneActions = {
@@ -31,6 +35,7 @@ type SceneActions = {
   setActiveObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
   clearObject: () => void;
   setHoveredObject: (objectId: RoomObjectId | null, position?: [number, number, number]) => void;
+  setActiveModal: (modal: ModalType) => void;
   reset: () => void;
 };
 
@@ -43,6 +48,7 @@ const initialState: SceneState = {
   objectPosition: null,
   hoveredObject: null,
   hoverPosition: null,
+  activeModal: null,
 };
 
 export const useSceneStore = create<SceneState & SceneActions>((set) => ({
@@ -75,6 +81,8 @@ export const useSceneStore = create<SceneState & SceneActions>((set) => ({
     hoveredObject: objectId,
     hoverPosition: position || null,
   }),
+
+  setActiveModal: (modal) => set({ activeModal: modal }),
 
   reset: () => set(initialState),
 }));

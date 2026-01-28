@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useSceneStore } from '~/stores/useSceneStore';
@@ -13,16 +13,17 @@ const EMISSIVE_INTENSITY = 0.4;
 
 /**
  * Room3 (거실) TV 이스터에그
- * - TV 클릭 시 EmulatorJS 모달 표시
+ * - TV 클릭 시 EmulatorJS 모달 표시 (store를 통해)
  */
 export function Room3InteractiveObjects() {
   const { scene, camera, raycaster, pointer } = useThree();
   const activeRoom = useSceneStore((state) => state.activeRoom);
+  const activeModal = useSceneStore((state) => state.activeModal);
   const hoveredObject = useSceneStore((state) => state.hoveredObject);
   const hoverPosition = useSceneStore((state) => state.hoverPosition);
   const setHoveredObject = useSceneStore((state) => state.setHoveredObject);
+  const setActiveModal = useSceneStore((state) => state.setActiveModal);
 
-  const [showEasterEgg, setShowEasterEgg] = useState(false);
   const lastHoveredRef = useRef<Room3ObjectId | null>(null);
   const highlightedMeshesRef = useRef<Mesh[]>([]);
 
@@ -109,12 +110,12 @@ export function Room3InteractiveObjects() {
       if (ROOM3_INTERACTIVE_MESHES.has(meshName)) {
         const objectId = getMeshObjectId(meshName);
         if (objectId === 'tv') {
-          setShowEasterEgg(true);
+          setActiveModal('easter-egg');
         }
         return;
       }
     }
-  }, [raycaster, pointer, camera, scene]);
+  }, [raycaster, pointer, camera, scene, setActiveModal]);
 
   useEffect(() => {
     const canvas = document.querySelector('canvas');
@@ -132,11 +133,12 @@ export function Room3InteractiveObjects() {
   }
 
   const isRoom3Hovered = hoveredObject === 'tv';
+  const isModalOpen = activeModal !== null;
 
   return (
     <>
       {/* Hover 레이블 */}
-      {isRoom3Hovered && hoverPosition && !showEasterEgg && (
+      {isRoom3Hovered && hoverPosition && !isModalOpen && (
         <Html
           position={[hoverPosition[0], hoverPosition[1] + 0.15, hoverPosition[2]]}
           center
@@ -148,70 +150,6 @@ export function Room3InteractiveObjects() {
           </div>
         </Html>
       )}
-
-      {/* 이스터에그 모달 (3D 공간 외부에서 렌더링) */}
-      {showEasterEgg && (
-        <Html fullscreen>
-          <EasterEggModal onClose={() => setShowEasterEgg(false)} />
-        </Html>
-      )}
     </>
-  );
-}
-
-// 이스터에그 모달 컴포넌트
-function EasterEggModal({ onClose }: { onClose: () => void }) {
-  // ESC 키로 닫기
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
-      onClick={onClose}
-    >
-      <div
-        className="relative bg-background border border-border rounded-lg p-6 max-w-2xl w-full mx-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-
-        {/* 헤더 */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-foreground mb-2">🎮 이스터에그를 발견했습니다!</h2>
-          <p className="text-muted-foreground">TV를 클릭하셨네요. 숨겨진 게임을 찾아주셔서 감사합니다!</p>
-        </div>
-
-        {/* 게임 영역 (placeholder) */}
-        <div className="aspect-video bg-black rounded-lg flex items-center justify-center border border-border">
-          <div className="text-center">
-            <p className="text-green-400 text-lg mb-2">🕹️ Retro Game Zone</p>
-            <p className="text-muted-foreground text-sm">EmulatorJS가 여기에 로드됩니다</p>
-            <p className="text-muted-foreground text-xs mt-2">(ROM 파일 추가 후 활성화)</p>
-          </div>
-        </div>
-
-        {/* 안내 */}
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          <p>ESC 또는 바깥 클릭으로 닫기</p>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -16,7 +16,10 @@ import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
 import { SectionIndicator } from "~/components/ui/SectionIndicator";
 import { BackToHomeButton } from "~/components/ui/BackToHomeButton";
+import { TutorialModal } from "~/components/ui/TutorialModal";
+import { EasterEggModal, GalleryModal } from "~/components/modals";
 import { useSectionUrl } from "~/hooks/useSectionUrl";
+import { useSceneStore } from "~/stores/useSceneStore";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -27,6 +30,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   useSectionUrl();
+  const activeModal = useSceneStore((state) => state.activeModal);
 
   return (
     <div className="h-screen w-screen">
@@ -49,6 +53,13 @@ export default function Home() {
 
       {/* 홈으로 돌아가기 버튼 */}
       <BackToHomeButton />
+
+      {/* 튜토리얼 모달 (첫 방문 시) */}
+      <TutorialModal />
+
+      {/* 이스터에그/갤러리 모달 (R3F 외부에서 렌더링) */}
+      {activeModal === 'easter-egg' && <EasterEggModal />}
+      {activeModal === 'gallery' && <GalleryModal />}
 
       {/* TODO: Phase 4에서 콘텐츠 추가 후 활성화
       <ContentPanel>
