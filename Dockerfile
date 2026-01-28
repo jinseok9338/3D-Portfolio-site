@@ -24,6 +24,9 @@ RUN pnpm build
 # ===========================================
 FROM nginx:alpine AS runner
 
+# Install curl for healthcheck
+RUN apk add --no-cache curl
+
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -38,7 +41,7 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+  CMD curl -f http://localhost:3000/health || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
