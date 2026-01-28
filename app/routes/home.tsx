@@ -12,8 +12,8 @@ import {
   Room3InteractiveObjects,
   Room6InteractiveObjects,
 } from "~/components/three";
-import { DebugRoomPositions } from "~/components/three/DebugRoomPositions";
 import { ContentPanel } from "~/components/panels";
+import { SectionContent, getSectionTitle } from "~/components/sections";
 import { SectionIndicator } from "~/components/ui/SectionIndicator";
 import { BackToHomeButton } from "~/components/ui/BackToHomeButton";
 import { TutorialModal } from "~/components/ui/TutorialModal";
@@ -30,6 +30,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   useSectionUrl();
+  const activeSection = useSceneStore((state) => state.activeSection);
   const activeModal = useSceneStore((state) => state.activeModal);
 
   return (
@@ -45,7 +46,6 @@ export default function Home() {
         <Room3InteractiveObjects />
         <Room6InteractiveObjects />
         <CameraDebugger />
-        {/* <DebugRoomPositions /> */}
       </SceneCanvas>
 
       {/* 섹션 인디케이터 */}
@@ -57,15 +57,14 @@ export default function Home() {
       {/* 튜토리얼 모달 (첫 방문 시) */}
       <TutorialModal />
 
+      {/* 콘텐츠 패널 */}
+      <ContentPanel title={getSectionTitle(activeSection)}>
+        <SectionContent />
+      </ContentPanel>
+
       {/* 이스터에그/갤러리 모달 (R3F 외부에서 렌더링) */}
       {activeModal === 'easter-egg' && <EasterEggModal />}
       {activeModal === 'gallery' && <GalleryModal />}
-
-      {/* TODO: Phase 4에서 콘텐츠 추가 후 활성화
-      <ContentPanel>
-        <p className="text-muted-foreground">섹션 콘텐츠가 여기에 표시됩니다.</p>
-      </ContentPanel>
-      */}
     </div>
   );
 }
