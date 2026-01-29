@@ -20,6 +20,7 @@ import { TutorialModal } from "~/components/ui/TutorialModal";
 import { TouchGuide } from "~/components/ui/TouchGuide";
 import { EasterEggModal, GalleryModal } from "~/components/modals";
 import { useSectionUrl } from "~/hooks/useSectionUrl";
+import { useAndroidBackButton } from "~/hooks/useAndroidBackButton";
 import { useSceneStore } from "~/stores/useSceneStore";
 
 export function meta({}: Route.MetaArgs) {
@@ -37,6 +38,7 @@ const OBJECT_INTERACTION_SECTIONS = ['about', 'projects'];
 
 export default function Home() {
   useSectionUrl();
+  useAndroidBackButton();
   const activeSection = useSceneStore((state) => state.activeSection);
   const activeObject = useSceneStore((state) => state.activeObject);
   const activeModal = useSceneStore((state) => state.activeModal);
