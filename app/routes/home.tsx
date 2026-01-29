@@ -24,8 +24,11 @@ import { useSceneStore } from "~/stores/useSceneStore";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Portfolio" },
-    { name: "description", content: "Interactive 3D Portfolio" },
+    { title: "Jinseok Seo | Frontend Developer" },
+    { name: "description", content: "프론트엔드 개발자 서진석의 인터랙티브 3D 포트폴리오" },
+    { property: "og:title", content: "Jinseok Seo | Frontend Developer" },
+    { property: "og:description", content: "프론트엔드 개발자 서진석의 인터랙티브 3D 포트폴리오" },
+    { property: "og:type", content: "website" },
   ];
 }
 

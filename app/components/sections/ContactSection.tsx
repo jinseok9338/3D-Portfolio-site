@@ -1,7 +1,14 @@
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, MapPin, Send } from 'lucide-react';
+import { Mail, Github, Linkedin, MapPin, Send, FileText } from 'lucide-react';
 
 const contacts = [
+  {
+    icon: <FileText className="w-5 h-5" />,
+    label: 'Resume',
+    value: '이력서 보기',
+    href: 'https://jinseok9338.notion.site/2f3480efc1bc8064810fe02f1125868f',
+    color: 'from-emerald-500 to-teal-600',
+  },
   {
     icon: <Mail className="w-5 h-5" />,
     label: 'Email',
