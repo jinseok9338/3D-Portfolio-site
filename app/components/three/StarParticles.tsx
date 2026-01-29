@@ -3,7 +3,6 @@ import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random';
 import type { Points as PointsType } from 'three';
-import { getIsMobile } from '~/hooks/useIsMobile';
 
 type StarParticlesProps = {
   count?: number;
@@ -17,17 +16,13 @@ export function StarParticles({
   speed = 0.3,
 }: StarParticlesProps) {
   const ref = useRef<PointsType>(null);
-  const isMobile = useMemo(() => getIsMobile(), []);
-
-  // 모바일에서 파티클 수 대폭 감소
-  const actualCount = isMobile ? Math.min(count, 500) : count;
 
   // 랜덤 위치 생성 (구 형태로 분포)
   const positions = useMemo(() => {
-    const arr = new Float32Array(actualCount * 3);
+    const arr = new Float32Array(count * 3);
     random.inSphere(arr, { radius });
     return arr;
-  }, [actualCount, radius]);
+  }, [count, radius]);
 
   useFrame((_, delta) => {
     if (ref.current) {
@@ -43,7 +38,7 @@ export function StarParticles({
         <PointMaterial
           transparent
           color="#ffffff"
-          size={isMobile ? 0.12 : 0.08}
+          size={0.08}
           sizeAttenuation
           depthWrite={false}
           opacity={0.8}

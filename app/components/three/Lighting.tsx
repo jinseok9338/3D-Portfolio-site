@@ -1,21 +1,16 @@
-import { useMemo } from 'react';
-import { getIsMobile } from '~/hooks/useIsMobile';
-
 export function Lighting() {
-  const isMobile = useMemo(() => getIsMobile(), []);
-
   return (
     <>
       {/* 전체적인 부드러운 조명 */}
-      <ambientLight intensity={isMobile ? 0.5 : 0.4} />
+      <ambientLight intensity={0.4} />
 
-      {/* 메인 조명 (태양) - 모바일에서 그림자 비활성화 */}
+      {/* 메인 조명 (태양) */}
       <directionalLight
         position={[10, 10, 5]}
         intensity={1}
-        castShadow={!isMobile}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
         shadow-camera-far={50}
         shadow-camera-left={-10}
         shadow-camera-right={10}
