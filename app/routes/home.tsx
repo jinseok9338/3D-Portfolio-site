@@ -23,13 +23,40 @@ import { useSectionUrl } from "~/hooks/useSectionUrl";
 import { useAndroidBackButton } from "~/hooks/useAndroidBackButton";
 import { useSceneStore } from "~/stores/useSceneStore";
 
+const SITE_URL = "https://portfolio.jinseok9338.info";
+const SITE_TITLE = "Jinseok Seo | Frontend Developer";
+const SITE_DESCRIPTION = "프론트엔드 개발자 서진석의 인터랙티브 3D 포트폴리오. React, Three.js를 활용한 몰입형 웹 경험을 제공합니다.";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Jinseok Seo | Frontend Developer" },
-    { name: "description", content: "프론트엔드 개발자 서진석의 인터랙티브 3D 포트폴리오" },
-    { property: "og:title", content: "Jinseok Seo | Frontend Developer" },
-    { property: "og:description", content: "프론트엔드 개발자 서진석의 인터랙티브 3D 포트폴리오" },
+    // 기본 메타
+    { title: SITE_TITLE },
+    { name: "description", content: SITE_DESCRIPTION },
+    { name: "keywords", content: "프론트엔드 개발자, Frontend Developer, React, Three.js, 포트폴리오, 서진석, Jinseok Seo, 웹 개발자, 3D 웹" },
+    { name: "author", content: "Jinseok Seo (서진석)" },
+    { name: "theme-color", content: "#0f172a" },
+
+    // Canonical
+    { tagName: "link", rel: "canonical", href: SITE_URL },
+
+    // Open Graph
     { property: "og:type", content: "website" },
+    { property: "og:url", content: SITE_URL },
+    { property: "og:title", content: SITE_TITLE },
+    { property: "og:description", content: SITE_DESCRIPTION },
+    { property: "og:image", content: OG_IMAGE },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:locale", content: "ko_KR" },
+    { property: "og:site_name", content: "Jinseok Seo Portfolio" },
+
+    // Twitter Card
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:url", content: SITE_URL },
+    { name: "twitter:title", content: SITE_TITLE },
+    { name: "twitter:description", content: SITE_DESCRIPTION },
+    { name: "twitter:image", content: OG_IMAGE },
   ];
 }
 

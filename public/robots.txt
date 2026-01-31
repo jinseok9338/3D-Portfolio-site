@@ -1,0 +1,7 @@
+# robots.txt for portfolio.jinseok9338.info
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://portfolio.jinseok9338.info/sitemap.xml
